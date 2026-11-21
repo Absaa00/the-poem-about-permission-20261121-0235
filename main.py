@@ -21,6 +21,10 @@ OUTPUT_PATH = Path("/output/entry.txt")
 
 def main() -> None:
     text = POEM.strip() + "\n"
+    # Gate the competition names: 1-280 Unicode code points, not only
+    # whitespace. Fail loudly here rather than shipping an invalid entry.
+    if not 1 <= len(text) <= 280 or not text.strip():
+        raise ValueError(f"entry.txt must be 1-280 characters, got {len(text)}")
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(text, encoding="utf-8")
 
